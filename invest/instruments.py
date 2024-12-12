@@ -1,12 +1,12 @@
 from tinkoff.invest import Client
-from .settings import get_token
+from .settings import get_token, get_target
 from .sql import has_table, get_connetion, to_sql
 import pandas as pd
 
 def get_dataframe_of_instruments():
     """Получаем таблицу соответствия figi, тикера и названия инструмента"""
     l=[]
-    with Client(get_token()) as client:
+    with Client(get_token(), target=get_target()) as client:
         instruments = client.instruments
         market_data = client.market_data
         for method in ['shares', 'bonds', 'etfs', 'currencies', 'futures']:

@@ -1,0 +1,6 @@
+tinkoff-investments
+pandas
+numpy
+sqlalchemy
+python-dotenv
+matplotlib

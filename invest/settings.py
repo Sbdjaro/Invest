@@ -1,5 +1,7 @@
 import os
 from dotenv import load_dotenv
+from tinkoff.invest.constants import INVEST_GRPC_API, INVEST_GRPC_API_SANDBOX 
+
 
 def config():
     ans = {
@@ -11,3 +13,13 @@ def get_token():
     load_dotenv()
     token = os.environ.get('TOKEN')
     return token
+
+def get_target():
+    load_dotenv()
+    mode = os.environ.get('MODE')
+    if mode == 'real':
+        return INVEST_GRPC_API
+    elif mode == 'sandbox':
+        return INVEST_GRPC_API_SANDBOX
+    else:
+        return INVEST_GRPC_API
