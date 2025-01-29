@@ -14,13 +14,13 @@ def get_bond_coupons(ticker, from_='2020-01-01', to_='2030-01-01'):
                                                       to=pd.to_datetime(to_))
         res = pd.DataFrame()
         for num, cup in enumerate(coupons.events):
-            tmp = {'dt': cup.coupon_date,
+            data = {'dt': cup.coupon_date,
                    'coupon_number': cup.coupon_number,
                    'amt': cup.pay_one_bond,
                    'period_in_days': cup.coupon_period}
-            tmp = handle_types(tmp)
-            tmp = pd.DataFrame.from_dict(tmp, orient='index').T
-            res = pd.concat([res, tmp])
+            data = handle_types(data, to_dt=True)
+            data = pd.DataFrame.from_dict(data, orient='index').T
+            res = pd.concat([res, data])
         return res
     
 
