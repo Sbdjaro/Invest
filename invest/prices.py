@@ -4,6 +4,8 @@ from .settings import get_token, get_target
 from .instruments import get_figi_by_ticker
 from .candle import Candle
 
+from tinkoff.invest.constants import INVEST_GRPC_API, INVEST_GRPC_API_SANDBOX 
+
 
 def interval_transcription():
     transcription =  {
@@ -32,6 +34,7 @@ def t_to_interval(interval):
 def load_candles(tiker, interval, from_, to_):
     ans = pd.DataFrame()
     with Client(get_token(), target=get_target()) as client:
+    #with Client('1', target=INVEST_GRPC_API_SANDBOX) as client:
         for candle in client.get_all_candles(
             figi=get_figi_by_ticker(tiker),
             from_=from_,
