@@ -31,12 +31,12 @@ def interval_to_t(interval):
 def t_to_interval(interval):
     return {v: k for k, v in interval_transcription().items()}[interval]
 
-def load_candles(tiker, interval, from_, to_):
+def load_candles(ticker, interval, from_, to_):
     ans = pd.DataFrame()
     with Client(get_token(), target=get_target()) as client:
     #with Client('1', target=INVEST_GRPC_API_SANDBOX) as client:
         for candle in client.get_all_candles(
-            figi=get_figi_by_ticker(tiker),
+            figi=get_figi_by_ticker(ticker),
             from_=from_,
             to=to_,
             interval=interval_to_t(interval),
@@ -45,3 +45,9 @@ def load_candles(tiker, interval, from_, to_):
             ans = pd.concat([ans, candle.to_df()])
     ans['datetime'] = pd.to_datetime(ans['datetime'])
     return ans.reset_index(drop=True).sort_values('datetime')
+
+def load_single_price(ticker, date):
+    with Client(get_token(), target=get_target()) as client:
+        prices = load_candles(ticker, 'day', pd.to_datetime(date), pd.to_datetime(date)+pd.DateOffset(days=1)) #
+        price = prices['close'].values[0]
+        return price
